@@ -42,7 +42,7 @@ Install from wordpress
 1. Open plugin installing page
 2. Search  WP Code Highlight.js
 3. Install it
-4. Use `<pre><code>` and `</code></pre>` to wrapper your code.(see [highlightjs](https://github.com/isagalaev/highlight.js) for detail)
+4. Use `<pre><code> and </code></pre>` to wrapper your code.(see [highlightjs](https://github.com/isagalaev/highlight.js) for detail)
 5. Enable SyntaxHighlighter compatible mode and Prettify compatible mode if you need it.
 
 Install custom
@@ -50,7 +50,7 @@ Install custom
 1. Download release package
 2. Unzip and rename folder name into wp-code-highlight.js
 3. Move this folder into *[your wordpress path]/wp-content/plugins/* folder
-4. Use `<pre><code>` and `</code></pre>` to wrapper your code.(see [highlightjs](https://github.com/isagalaev/highlight.js) for detail)
+4. Use `<pre><code> and </code></pre>` to wrapper your code.(see [highlightjs](https://github.com/isagalaev/highlight.js) for detail)
 5. Enable SyntaxHighlighter compatible mode and Prettify compatible mode if you need it.
 
 Just have fun.
@@ -58,7 +58,7 @@ Just have fun.
 == Changelog ==
 
 = 0.2.0 =
-1. close BBCode of [code] for default([BUS #1](https://github.com/owt5008137/WP-Code-Highlight.js/issues/1))
+1. close BBCode of [code] for default([BUG #1](https://github.com/owt5008137/WP-Code-Highlight.js/issues/1))
 2. update highlight.js to 8.4
 
 = 0.1.8 =
