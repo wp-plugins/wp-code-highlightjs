@@ -3,7 +3,7 @@ Donate link: http://owent.net/
 Tags: source, code, highlight, sourcecode, highlighter, plugin, syntax, SyntaxHighlighter
 Requires at least: 3.0
 Tested up to: 4.1.0
-Stable tag: 0.2.0
+Stable tag: 0.2.1
 
 This is a wordpress plugin for highlight.js library.
 And you can easily migrate from SynaxHighlight or Google Prettify without change
@@ -42,7 +42,7 @@ Install from wordpress
 1. Open plugin installing page
 2. Search  WP Code Highlight.js
 3. Install it
-4. Use `<pre><code> and </code></pre>` to wrapper your code.(see [highlightjs](https://github.com/isagalaev/highlight.js) for detail)
+4. Use `<pre><code>` and `</code></pre>` to wrapper your code.(see [highlightjs](https://github.com/isagalaev/highlight.js) for detail)
 5. Enable SyntaxHighlighter compatible mode and Prettify compatible mode if you need it.
 
 Install custom
@@ -50,12 +50,15 @@ Install custom
 1. Download release package
 2. Unzip and rename folder name into wp-code-highlight.js
 3. Move this folder into *[your wordpress path]/wp-content/plugins/* folder
-4. Use `<pre><code> and </code></pre>` to wrapper your code.(see [highlightjs](https://github.com/isagalaev/highlight.js) for detail)
+4. Use `<pre><code>` and `</code></pre>` to wrapper your code.(see [highlightjs](https://github.com/isagalaev/highlight.js) for detail)
 5. Enable SyntaxHighlighter compatible mode and Prettify compatible mode if you need it.
 
 Just have fun.
 
 == Changelog ==
+
+= 0.2.1 =
+1. open ver 8.4 in baidu cdn,(lib is merged [Request 48](https://github.com/Clouda-team/baiducdnstatic/pull/48)
 
 = 0.2.0 =
 1. close BBCode of [code] for default([BUG #1](https://github.com/owt5008137/WP-Code-Highlight.js/issues/1))
