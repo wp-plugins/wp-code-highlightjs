@@ -3,7 +3,7 @@
  * Plugin Name: WP Code Highlight.js
  * Plugin URI: https://github.com/owt5008137/WP-Code-Highlight.js 
  * Description: This is simple wordpress plugin for <a href="http://highlightjs.org/">highlight.js</a> library. Highlight.js highlights syntax in code examples on blogs, forums and in fact on any web pages. It&acute;s very easy to use because it works automatically: finds blocks of code, detects a language, highlights it.
- * Version: 0.2.2
+ * Version: 0.2.3
  * Author: OWenT
  * Author URI: http://owent.net/
  * License: 3-clause BSD
@@ -154,17 +154,15 @@ function hljs_include() {
     if (!empty($hljs_cdn_list[$hljs_location]))
         $hljs_cdn_info = $hljs_cdn_list[$hljs_location];
 
-    // inject jquery
-    wp_enqueue_script('jquery');
-
-    // inject js & css file
-    if ('local' == $hljs_cdn_info['cdn']) { ?>
-    <script type="text/javascript" src="<?php echo ($PLUGIN_DIR . '/highlight.' . $hljs_package .'.pack.js'); ?>"></script>
-    <link rel="stylesheet" href="<?php echo ($PLUGIN_DIR . '/styles/' . $hljs_code_option['theme'] . '.css'); ?>" />
-<?php } else { ?>
-    <script type="text/javascript" src="<?php echo ($hljs_cdn_info['cdn'] . '/highlight' . $hljs_cdn_info['js'] . '.js'); ?>"></script>
-    <link rel="stylesheet" href="<?php echo ($hljs_cdn_info['cdn'] . '/styles/' . $hljs_code_option['theme'] . $hljs_cdn_info['css'] . '.css'); ?>" />
-<?php } 
+    // inject js & css file    
+    if ( 'local' == $hljs_cdn_info['cdn'] ) {
+        wp_enqueue_script( 'hljs', $PLUGIN_DIR . '/highlight.' . $hljs_package .'.pack.js', 'jquery' );
+        wp_enqueue_style( 'hljstheme', $PLUGIN_DIR . '/styles/' . $hljs_code_option['theme'] . '.css' );
+    } else {
+        wp_enqueue_script( 'hljs', $hljs_cdn_info['cdn'] . '/highlight' . $hljs_cdn_info['js'] . '.js', 'jquery' );
+        wp_enqueue_style( 'hljstheme', $hljs_cdn_info['cdn'] . '/styles/' . $hljs_code_option['theme'] . $hljs_cdn_info['css'] . '.css' );
+    }
+    
 
     // inject init script
     $hljs_lib_configure = false;
