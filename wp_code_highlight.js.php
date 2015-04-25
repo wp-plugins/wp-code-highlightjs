@@ -3,7 +3,7 @@
  * Plugin Name: WP Code Highlight.js
  * Plugin URI: https://github.com/owt5008137/WP-Code-Highlight.js 
  * Description: This is simple wordpress plugin for <a href="http://highlightjs.org/">highlight.js</a> library. Highlight.js highlights syntax in code examples on blogs, forums and in fact on any web pages. It&acute;s very easy to use because it works automatically: finds blocks of code, detects a language, highlights it.
- * Version: 0.3.2
+ * Version: 0.3.3
  * Author: OWenT
  * Author URI: http://owent.net/
  * License: 3-clause BSD
@@ -16,7 +16,7 @@ $PLUGIN_DIR =  plugins_url() . '/' . dirname(plugin_basename(__FILE__));
  * Get version of this plugins
  */
 function hljs_get_version() {
-    return '0.3.2';
+    return '0.3.3';
 }
 
 /**
@@ -108,6 +108,7 @@ function hljs_install() {
         ),
         'additional_css' => "pre.hljs {padding: 5px;}\npre.hljs code {}",
         'syntaxhighlighter_compatible' => false,
+        'crayonsyntaxhighlighter_compatible' => false,
         'prettify_compatible' => false,
         'shortcode' => false,
         'custom_lang' => array()
@@ -235,6 +236,18 @@ function hljs_append_init_codes() {
             jblock.replaceWith($("<pre></pre>").append($("<code></code>").html(code_content)));
             hljs.highlightBlock(jblock.get(0));
         });
+<?php } 
+    //crayon compatible
+    if(hljs_get_option('crayonsyntaxhighlighter_compatible')){ ?>
+        $('pre:not(:has(code))').each(function(i, block){
+            var class_desc = $(block).attr("class") || "";
+            var reg_mat = class_desc.match(/lang\s*:\s*([\w\d]+)/i);
+
+            var $code = $("<code></code>").html($(block).removeAttr('class').html());
+            $(block).empty().append($code.addClass(reg_mat[1]));
+            hljs.highlightBlock($code[0]);
+        });
+
 <?php } ?>
            
         });
@@ -245,7 +258,7 @@ function hljs_append_init_codes() {
     </script>
 <?php
 }
-add_action('wp_footer', 'hljs_append_init_codes', 100);
+add_action('wp_print_footer_scripts', 'hljs_append_init_codes');
 
 /**
  * Initialize Localization Functions
@@ -374,6 +387,7 @@ function hljs_settings_page() {
             'additional_css' => $_POST['hljs_additional_css'],
             'syntaxhighlighter_compatible' => (isset($_POST['hljs_syntaxhighlighter_compatible']) && $_POST['hljs_syntaxhighlighter_compatible'])? true: false,
             'prettify_compatible' => (isset($_POST['hljs_prettify_compatible']) && $_POST['hljs_prettify_compatible'])? true: false,
+            'crayonsyntaxhighlighter_compatible' => (isset($_POST['hljs_crayonsyntaxhighlighter_compatible']) && $_POST['hljs_crayonsyntaxhighlighter_compatible'])? true: false,
             'shortcode' => (isset($_POST['hljs_enable_shortcode']) && $_POST['hljs_enable_shortcode'])? true: false,
             'custom_lang' => hljs_get_option('custom_lang')
         );
@@ -693,10 +707,15 @@ function hljs_settings_page() {
 
         <!-- check box : compatible options -->
         <p class="section">
-          <label for="hljs_syntaxhighlighter_compatible"><?php echo __('SyntaxHighlighter Compatiable:', 'wp-code-highlight.js') ?></label>
           <input type="checkbox" name="hljs_syntaxhighlighter_compatible" id="hljs_syntaxhighlighter_compatible" value="1" <?php if(hljs_get_option('syntaxhighlighter_compatible')) echo ' checked="checked"'; ?> />
-          <label for="hljs_prettify_compatible"><?php echo __('Prettify Compatible:', 'wp-code-highlight.js') ?></label>
-          <input type="checkbox" name="hljs_prettify_compatible" id="hljs_prettify_compatible" value="1" <?php if(hljs_get_option('prettify_compatible')) echo ' checked="checked"'; ?> /><br />
+          <label for="hljs_syntaxhighlighter_compatible"><?php echo __('SyntaxHighlighter Compatiable', 'wp-code-highlight.js') ?></label><br />
+          
+          <input type="checkbox" name="hljs_prettify_compatible" id="hljs_prettify_compatible" value="1" <?php if(hljs_get_option('prettify_compatible')) echo ' checked="checked"'; ?> />
+          <label for="hljs_prettify_compatible"><?php echo __('Prettify Compatible', 'wp-code-highlight.js') ?></label><br />
+
+          <input type="checkbox" name="hljs_crayonsyntaxhighlighter_compatible" id="hljs_crayonsyntaxhighlighter_compatible" value="1" <?php if(hljs_get_option('crayonsyntaxhighlighter_compatible')) echo ' checked="checked"'; ?> />
+          <label for="hljs_crayonsyntaxhighlighter_compatible"><?php echo __('Crayon Syntax Highlighter Compatiable', 'wp-code-highlight.js') ?></label><br />
+          
         </p>
         
         <!-- check box : shortcode options -->
@@ -754,9 +773,10 @@ function hljs_settings_page() {
                 </tr>
                 <tr>
                     <td width="120px" align="center"><?php echo __('Thanks To', 'wp-code-highlight.js'); ?></td>
-                    <td><p>
-                            <a href="http://geraint.co">Geraint Palmer</a>
-                        </p></td>
+                    <td><ul>
+                            <li><a href="http://geraint.co">Geraint Palmer</a></li>
+                            <li><a href="http://www.codingserf.com">David</a></li>
+                        </ul></td>
                 </tr>
            </table>
     </div>
