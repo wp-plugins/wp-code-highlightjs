@@ -1,5 +1,5 @@
 === WP Code Highlight.js ===
-Donate link: http://owent.net/
+Donate link: https://github.com/owt5008137/WP-Code-Highlight.js/#donate
 Tags: source, code, highlight, sourcecode, highlighter, plugin, syntax, SyntaxHighlighter
 Requires at least: 3.0
 Tested up to: 4.2.1
@@ -66,6 +66,10 @@ Just have fun.
 7. Sample: Syntax Highlighter Compatiable Mode
 
 == Changelog ==
+
+= 0.3.4 =
+1. replace baidu cdn with url support https
+2. update baidu cdn because it accept highlight.js 8.5 now
 
 = 0.3.3 =
 1. add [Crayon Syntax Highlighter Compatible] option
