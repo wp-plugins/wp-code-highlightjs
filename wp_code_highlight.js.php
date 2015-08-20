@@ -3,7 +3,7 @@
  * Plugin Name: WP Code Highlight.js
  * Plugin URI: https://github.com/owt5008137/WP-Code-Highlight.js 
  * Description: This is simple wordpress plugin for <a href="http://highlightjs.org/">highlight.js</a> library. Highlight.js highlights syntax in code examples on blogs, forums and in fact on any web pages. It&acute;s very easy to use because it works automatically: finds blocks of code, detects a language, highlights it.
- * Version: 0.4.5
+ * Version: 0.4.6
  * Author: OWenT
  * Author URI: https://owent.net/
  * License: 3-clause BSD
@@ -16,7 +16,7 @@ $PLUGIN_DIR =  plugins_url() . '/' . dirname(plugin_basename(__FILE__));
  * Get version of this plugins
  */
 function hljs_get_version() {
-    return '0.4.5';
+    return '0.4.6';
 }
 
 /**
@@ -169,6 +169,23 @@ function hljs_get_lib_option($item) {
     return $res[$item];
 }
 
+function hljs_remove_ex_mode() {
+    $upload_options = get_option('hljs_code_option');
+    if (!empty($upload_options)) {
+        $opt_packs = $upload_options['package'];
+        // ex mode already deleted, so convert to custom mode
+        if ('ex' == $opt_packs) {
+            $upload_options['package'] = 'custom';
+            $upload_options['custom_lang'] = array('actionscript', 'applescript', 'cmake', 'capnproto', 'd', 'dos', 'erlang', 'fsharp', 'go', 'less', 'lisp', 'lua', 'matlab', 'protobuf', 'profile', 'scala', 'tex', 'typescript');
+            update_option('hljs_code_option', $upload_options);
+            echo "<!-- [DEBUG]: convert ex mode to custom mode -->" . PHP_EOL;
+        }
+        echo "<!-- [DEBUG]:$opt_packs -->" . PHP_EOL;
+        
+        hljs_generate_custom_pack();
+    }
+}
+
 /**
  * Attach Highlight.js to the current page
  *   - attach highlight.pack.js
@@ -186,6 +203,10 @@ function hljs_include() {
 
     // inject js & css file    
     if ( 'local' == $hljs_cdn_info['cdn'] ) {
+        if ('ex' == $hljs_package) {
+            hljs_remove_ex_mode();
+        }
+        
         $dep_libs = array('jquery');
         if ('custom' == $hljs_package) {
             wp_enqueue_script( 'hljs_preload', $PLUGIN_DIR . '/highlight.common.pack.js', $dep_libs, hljs_get_version(), true );
@@ -433,18 +454,6 @@ function hljs_on_update_complete($plugin, $data) {
             }
         }
         if ($rebuild_flag) {
-            $upload_options = get_option('hljs_code_option');
-            if (!empty($upload_options)) {
-                $opt_packs = $upload_options['package'];
-                // ex mode already deleted, so convert to custom mode
-                if ('ex' == $opt_packs) {
-                    $upload_options['package'] = 'custom';
-                    $upload_options['custom_lang'] = array('actionscript', 'applescript', 'cmake', 'capnproto', 'd', 'dos', 'erlang', 'fsharp', 'go', 'less', 'lisp', 'lua', 'matlab', 'protobuf', 'profile', 'scala', 'tex', 'typescript');
-                    update_option('hljs_code_option', $upload_options);
-                    echo '<p class="info">' . __('Convert ex mode to custom mode.', 'wp-code-highlight.js') . '</p>';
-                }
-                echo "<p class='info'>[DEBUG]:$opt_packs</p>";
-            }
             hljs_generate_custom_pack();
         }
     }
